@@ -1,0 +1,45 @@
+init.sqf
+
+
+
+//// Marqueur sur map spécifiques par camps
+
+if (!isDedicated) then
+{
+{_x setMarkerAlphaLocal 0} forEach ["spawnru","spawnus","mkus","mkru","mkru1","mkus1","mkus2","mkru2"];
+waitUntil {!isNull player};
+switch (side player) do
+{
+	case WEST:
+	{
+		{_x setMarkerAlphaLocal 1} forEach ["spawnus","mkus","mkus1","mkus2"];
+	};
+	case EAST:
+	{
+		{_x setMarkerAlphaLocal 1} forEach ["spawnru","mkru","mkru1","mkru2"];
+	};
+};
+};
+
+
+///////////// Pour empêcher une IA de bouger:
+this disableAI "MOVE";
+
+///////////// Pour afficher les ID objets dans l'éditeur:
+do3DENAction "ToggleMapIDs";
+>> A mettre dans la console de débug.
+
+///////////// Afficher le score board à la fin de la mission:
+[] call omtk_sb_compute_scoreboard;
+[] call omtk_sb_start_mission_end;
+[] call ocap_fnc_exportData; 
+
+///////////// Forcer la fin du warmup
+[] call omtk_wu_fn_launch_game;
+
+
+///////////// Afficher le nom d'un joueur lorqu'il rentre dans une zone:
+hint parseText format["<t size='1.30' font='PuristaMedium' color='#0000ff'>texte<br />ici</t>"];
+hint parseText (format["Texte en titre:<br/><img size='10' image='Votre image.paa'/><br/> %1", playerName]); 
+
+>> A mettre dans le champ "init" d'un trigger.
